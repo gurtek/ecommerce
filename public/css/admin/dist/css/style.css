@@ -1,0 +1,217 @@
+/* .main-sidebar, .sidebar-menu>li>.treeview-menu {
+    background-color: #fff !important;
+    border-right: 1px solid #d5d5d5;
+}
+
+.sidebar-menu>li>.treeview-menu {
+    background: #fff !important;
+}
+.main-header .navbar, .main-header .logo {
+    background-color: #bc3cac !important;
+}
+.sidebar-menu .treeview-menu>li>a {
+    color: #000 !important;
+}
+
+.main-header .navbar .sidebar-toggle:hover {
+    background-color: #a72695 !important;
+}
+
+.content-wrapper {
+    background-color: rgba(241, 241, 241, 0.41);
+}
+
+.sidebar-menu>li.active>a {
+    border-left-color: #bc3cac !important;
+}
+
+.sidebar-menu>li.active>a, .skin-blue .sidebar-menu>li.menu-open>a {
+    color: #000 !important;
+    background: #e3e2e2d6 !important;
+}
+
+.skin-blue .sidebar-menu>li.header {
+    background: #f1f1f1 !important;
+} */
+
+body {
+    font-family: 'Open Sans', sans-serif !important;
+    min-width: 300px !important;
+}
+
+.main-sidebar {
+    background: #19222E;
+    position: fixed;
+}
+.main-sidebar ul li a {
+    background-color: #1a242e;
+    transition: all .2s ease-in-out;
+}
+.main-sidebar ul.treeview-menu li a {
+    background: #1e2935;
+    
+}
+
+.main-sidebar ul li {
+    border-bottom: 1px solid #7372721c;
+    border-top: 1px solid #161e29;
+}
+.main-sidebar ul.treeview-menu li {
+    border: none !important;
+}
+
+.main-sidebar ul.treeview-menu li a:hover {
+    background: #1a242e;
+    margin-left: 5px;
+}
+
+.main-sidebar ul li a {
+    color: #B3CBDD !important;
+    padding: 10px;
+    
+}
+
+.sidebar-menu>li.header {
+    color: #fff;
+    background: #19222E;
+}
+
+.main-sidbar ul.treeview-menu li a:before {
+    content: "\f101";
+    font-size: 13px;
+    font-family: FontAwesome;
+    margin-left: 10px;
+    margin-right: 10px;
+    transition: margin ease 0.5s;
+}
+.content-wrapper {
+    background: #fff !important;
+}
+
+.main-header .navbar {
+    background: #122896;
+}
+
+.main-header ul li a {
+    color: rgba(255, 255, 255, .8);
+}
+
+.main-header .logo {
+    color: #fff;
+    background: #0e217f;
+}
+ 
+
+.app-btn {
+    border: none;
+    outline: none !important;
+    padding: 10px 20px;
+    border-radius: 2px;
+    /* margin: 5px !important; */
+}
+.btn {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius: 2px !important;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+    background-color: #831296 !important;
+    border-radius: 2px !important;
+    padding: 10px 20px !important;
+    color: #fff;
+}
+
+.btn-info, .btn-info:hover, .btn-info:active, .btn-info:focus{
+    background-color: #0e217f !important;
+    border-radius: 2px !important;
+    padding: 10px 20px !important;
+    color: #fff;
+}
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:focus {
+    background-color:#d00940 !important;
+    border-radius: 2px !important;
+    padding: 10px 20px !important;
+    color: #fff;
+}
+
+.btn-light {
+    background-color: rgba(242, 241, 241, 0.8);
+    border: 1px solid rgba(216, 213, 213, 0.77);
+    color: #444343;border-radius: 2px !important;
+    padding: 10px 20px !important;
+}
+
+.btn-xs, .btn-xs:hover, .btn-xs:active, .btn-xs:focus {
+    padding: 5px 10px !important;
+}
+ 
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: #0E217F;
+    border-color: #0E217F;
+    outline: none !important;
+    color: #fff !important;
+}
+
+.pagination>li>a {
+    background: #fafafa;
+    color: rgba(25, 34, 46, 0.8) !important;
+}
+
+@media (max-width: 991px) {
+    .content-header>.breadcrumb {
+        background: rgba(210, 214, 222, 0.25);
+    }
+}
+
+.input {
+    border:1px solid #ededed;
+    padding: 5px 10px;
+    color: #000;
+    position: relative;
+}
+
+/* .input.searchable:after {
+    position: absolute;
+    content: 'hello';
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: red;
+} */
+.table {
+    margin-bottom: 0px;
+}
+.table tr th {
+    padding: 10px 5px !important;
+    font-weight: normal;
+}
+.table tr th span {
+    float: right;
+}
+
+.table thead tr {
+    background-color: #f5f4f4;
+}
+.table-bottom-controls p {
+    display: inline-block;
+    padding: 20px 0px;
+}
+.user-panel p {
+    color: #fff;
+    font-weight: normal;
+}
+
+.user-panel i {
+    color: greenyellow;
+}
+
+.user-panel a {
+    color: #fff !important;
+}
+
+.edit_margin {
+	float:left;margin-right:10px;
+}
