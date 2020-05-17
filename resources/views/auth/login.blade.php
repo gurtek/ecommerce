@@ -1,12 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.frontlayout.fullwidth')
 
 @section('content')
+<section><!--form-->
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
+                <div class="card-header"><h3>{{ __('Login') }}</h3></div>
+				<hr>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -70,4 +71,5 @@
         </div>
     </div>
 </div>
+</section>
 @endsection

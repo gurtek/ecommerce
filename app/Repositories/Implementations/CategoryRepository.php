@@ -40,8 +40,8 @@ class CategoryRepository implements CategoryRepositoryInterface {
         return $category->delete();
     }
 
-    public function options() {
-        $options = ['' => 'select an option'];
+    public function options($withSelect = true) {
+        $options = $withSelect ? ['' => 'select an option'] : [];
         $result = Category::pluck('category_name', 'id');
         if($result->count())
             $options += $result->toArray();

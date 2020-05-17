@@ -54,7 +54,6 @@ class AttributeRepository implements AttributeRepositoryInterface {
 
         $data['attribute_value'] = $request->attribute_value;
         
-       
         return AttributeValue::find($id)->update($data);
 
     }
@@ -77,10 +76,10 @@ class AttributeRepository implements AttributeRepositoryInterface {
         return $options;
     }
 
-    public function attributeValueOptions( $attributeId) {
-        $options = ['' => 'select an option'];
+    public function attributeValueOptions( $attributeId, $withSelect = true) {
+        $options = $withSelect ? ['' => 'select an option'] : [];
         $result = AttributeValue::where('attribute_id', $attributeId)
-                               ->pluck('attribute_value', 'id');
+                                  ->pluck('attribute_value', 'id');
         if($result->count())
             $options += $result->toArray();
         return $options;
@@ -88,7 +87,8 @@ class AttributeRepository implements AttributeRepositoryInterface {
 
     public function getAttributeValues(Attribute $attribute) {
        
-        return AttributeValue::where('attribute_id', $attribute->id)->paginate(10);
+        return AttributeValue::where('attribute_id', $attribute->id)
+                ->paginate(10);
                              
     }
 

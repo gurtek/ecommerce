@@ -22,5 +22,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/dashboard','DashboardController@index');
 });
 
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'admin']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::resource('/cart', 'CartController');
+Route::get('/contact', 'ContactController@index');
+Route::get('/checkout', 'CheckoutController@index');
