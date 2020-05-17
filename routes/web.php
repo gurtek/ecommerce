@@ -27,6 +27,6 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth',
 });
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::resource('/cart', 'CartController');
-Route::get('/contact', 'ContactController@index');
+Route::resource('cart', 'CartController');
+Route::resource('contact', 'ContactController');
 Route::get('/checkout', 'CheckoutController@index');

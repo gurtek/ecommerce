@@ -7,9 +7,12 @@
     		<div class="row">  	
 	    		<div class="col-sm-8">
 	    			<div class="contact-form">
+					 @if(Session::has('message'))
+						<div class="alert alert-success">{{ Session::get('message') }} </div>
+					@endif
 	    				<h2 class="title text-center">Get In Touch</h2>
 	    				<div class="status alert alert-success" style="display: none"></div>
-				    	<form id="main-contact-form" class="contact-form row" name="contact-form" method="post">
+				    	 {{ Form::open(['url' => route('contact.store'), 'method'=>'post', 'files' => true ]) }}
 				            <div class="form-group col-md-6">
 				                <input type="text" name="name" class="form-control" required="required" placeholder="Name">
 				            </div>
@@ -25,7 +28,7 @@
 				            <div class="form-group col-md-12">
 				                <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
 				            </div>
-				        </form>
+				        {{ Form::close() }}
 	    			</div>
 	    		</div>
 	    		<div class="col-sm-4">
