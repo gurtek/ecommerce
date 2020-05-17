@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 13, 2020 at 02:52 PM
+-- Generation Time: May 17, 2020 at 01:10 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `attribute_values` (
   `attribute_id` bigint(20) DEFAULT NULL,
   `attribute_value` varchar(50) DEFAULT NULL,
   `attribute_image` varchar(191) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `attribute_id` (`attribute_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
@@ -68,10 +69,10 @@ CREATE TABLE IF NOT EXISTS `attribute_values` (
 -- Dumping data for table `attribute_values`
 --
 
-INSERT INTO `attribute_values` (`id`, `attribute_id`, `attribute_value`, `attribute_image`) VALUES
-(1, 1, 'Red', 'gdfgd'),
-(2, 1, 'Green', NULL),
-(5, 1, 'Pink', NULL);
+INSERT INTO `attribute_values` (`id`, `attribute_id`, `attribute_value`, `attribute_image`, `updated_at`) VALUES
+(1, 1, 'Red zon', 'gdfgd', '2020-05-14 09:55:59'),
+(2, 1, 'Green', NULL, NULL),
+(5, 2, 'Pink', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -109,6 +110,44 @@ INSERT INTO `brands` (`id`, `brand_name`, `brand_slug`, `image`, `created_at`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+CREATE TABLE IF NOT EXISTS `cart` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) DEFAULT NULL,
+  `total_amount` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_items`
+--
+
+DROP TABLE IF EXISTS `cart_items`;
+CREATE TABLE IF NOT EXISTS `cart_items` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `product_id` bigint(20) DEFAULT NULL,
+  `cart_id` bigint(20) DEFAULT NULL,
+  `product_price` varchar(20) NOT NULL,
+  `quantity` decimal(10,2) DEFAULT NULL,
+  `product_attributes` text DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `cart_id` (`cart_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
@@ -136,6 +175,33 @@ INSERT INTO `categories` (`id`, `category_name`, `category_slug`, `image`, `pare
 (2, 'women', 'women', NULL, NULL, '2020-04-26 05:05:42', '2020-04-26 05:05:42', NULL),
 (3, 'test', 'test', '9I6B73821588426491.JPG', NULL, '2020-04-30 10:51:57', '2020-05-07 11:34:47', '2020-05-07 11:34:47'),
 (4, 'menss', 'menss', NULL, 2, '2020-05-09 10:37:28', '2020-05-09 10:37:28', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact`
+--
+
+DROP TABLE IF EXISTS `contact`;
+CREATE TABLE IF NOT EXISTS `contact` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(120) DEFAULT NULL,
+  `subject` varchar(120) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contact`
+--
+
+INSERT INTO `contact` (`id`, `name`, `email`, `subject`, `message`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Breezy Deals', 'admin@mail.com', 'test', 'sdfsdf', '2020-05-17 05:51:57', '2020-05-17 05:51:57', NULL),
+(2, 'Breezy Deals', 'admin@mail.com', 'test', 'sdfsdf', '2020-05-17 05:52:19', '2020-05-17 05:52:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -194,7 +260,14 @@ CREATE TABLE IF NOT EXISTS `products` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_product_slug` (`product_slug`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `product_name`, `product_slug`, `product_description`, `product_price`, `quantity`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'text', 'text', 'test', '10.00', 10, '2020-05-14 09:46:43', '2020-05-14 09:46:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -209,7 +282,15 @@ CREATE TABLE IF NOT EXISTS `product_attachments` (
   `file_path` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_attachments`
+--
+
+INSERT INTO `product_attachments` (`id`, `product_id`, `file_path`) VALUES
+(1, 1, 'http://localhost/ecommerce/public/storage/files/1/products/alone.jpg'),
+(2, 1, 'http://localhost/ecommerce/public/storage/files/1/products/18767714_331253807292498_1938539012064040411_n.jpg');
 
 -- --------------------------------------------------------
 
@@ -227,7 +308,16 @@ CREATE TABLE IF NOT EXISTS `product_attributes` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `product_id` (`product_id`,`attribute_value_id`),
   KEY `attribute_value_id` (`attribute_value_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_attributes`
+--
+
+INSERT INTO `product_attributes` (`id`, `product_id`, `attribute_value_id`, `quantity`, `price`) VALUES
+(1, 1, 1, 1, '20.00'),
+(2, 1, 2, 2, '10.00'),
+(3, 1, 5, 3, '20.00');
 
 -- --------------------------------------------------------
 
@@ -256,6 +346,13 @@ CREATE TABLE IF NOT EXISTS `product_categories` (
   UNIQUE KEY `uk_productid_categoryid` (`category_id`,`product_id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_categories`
+--
+
+INSERT INTO `product_categories` (`product_id`, `category_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
