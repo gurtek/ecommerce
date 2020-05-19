@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use App\Category;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('front.home.index');
+        $products = Product::with('attachements')->get();
+
+        // getting some categories
+
+        // $categories = Category::where('id', 2)->limit(5)->with('productCategories')
+        //                         ->with('productCategories.product')
+        //                         ->first();
+
+        // dd($categories->productCategories);
+
+        
+        return view('front.home.index', compact('products'));
     }
 }

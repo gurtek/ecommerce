@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Product;
+use App\ProductCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,4 +17,12 @@ class Category extends Model
         'parent_id',
         'image'
     ];
+
+    public function children() {
+        return $this->hasMany('App\Category', 'parent_id', 'id') ;
+    }
+
+    public function productCategories() {
+        return $this->hasMany(ProductCategory::class);
+    }
 }

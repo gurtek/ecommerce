@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/test', function(){
+    return bcrypt('password');
+});
+
 // admin routes
 Route::match(['get','post'],'/admin','AdminController@index')->name('admin');
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(){
