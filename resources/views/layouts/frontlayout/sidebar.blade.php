@@ -23,7 +23,7 @@
 						<div class="panel-body">
 							<ul>
 								@foreach($menu->children as $child)
-									<li><a href="#">{{ $child->category_name }}</a></li>
+									<li><a href="{{ route('front.products', ['type' => 'category', 'value' => $child->id ]) }}">{{ $child->category_name }}</a></li>
 								@endforeach
 							</ul>
 						</div>
@@ -32,7 +32,9 @@
 				@else		
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title"><a href="#">{{ $menu->category_name }}</a></h4>
+						<h4 class="panel-title">
+							<a href="{{ route('front.products', ['type' => 'category', 'value' => $menu->id ]) }}">
+								{{ $menu->category_name }}</a></h4>
 					</div>
 				</div>
 				@endif
@@ -46,9 +48,17 @@
 	<div class="brands_products"><!--brands_products-->
 		<h2>Brands</h2>
 		<div class="brands-name">
+			@php
+				$brands = getBrands();
+			@endphp
+
+			@if($brands->count())
 			<ul class="nav nav-pills nav-stacked">
-				<li><a href="#"> <span class="pull-right">(50)</span>Acne</a></li>
+				@foreach($brands as $brand)
+					<li><a href="{{ route('front.products', ['type' => 'brand', 'value' => $brand->id ]) }}"> <span class="pull-right">({{ $brand->products->count() }})</span>{{ $brand->brand_name  }}</a></li>
+				@endforeach
 			</ul>
+			@endif
 		</div>
 	</div><!--/brands_products-->
 	
@@ -62,7 +72,9 @@
 	<!--/price-range-->
 	
 	<div class="shipping text-center"><!--shipping-->
-		<img src="images/home/shipping.jpg" alt="" />
+		<img src="{{ asset('images/home/shipping.jpg') }}" alt="" />
 	</div><!--/shipping-->
+
+	<br /><br />
 
 </div>

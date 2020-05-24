@@ -10,6 +10,7 @@ use App\ProductAttribute;
 use App\ProductAttachement;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\ProductAttributeView;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\AttributeRepositoryInterface;
@@ -31,8 +32,36 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.product.index');
+        $products = Product::with('productCategories')
+                    ->paginate(10);
+        return view('admin.product.index', compact('products'));
+    }
+
+    public function listProducts($type = null, $value = null) {
+        
+        $products = Product::with('productCategories')->get();
+
+        if($type == 'brand' && $value != null && is_numeric($value)) {
+            $products = Product::where('brand_id', $value)->get();
+        } else if($type == 'category' && $value != null ) {
+            $productsIds = ProductCategory::where('category_id', $value)->get(['product_id']);
+            if($productsIds->count()) {
+                $products = Product::whereIn('id', $productsIds)->with('attachements')
+                        ->get();
+            }
+        } 
+        
+        return view('front.product.index', compact('products'));
+    }
+
+    public function searchProduct(Request $request) {
+        
+        if($request->get('value') == null) {
+            abort(404);
+        } 
+        $value = $request->get('value');
+        $products = Product::where('product_name', 'like', '%' . $value . '%')->get();
+        return view('front.product.index', compact('products'));
     }
 
     /**
@@ -274,4 +303,23 @@ class ProductsController extends Controller
         }
         return $messages;
     }
+
+    // method for product detail front-end
+
+    public function productDetail($slug = null) {
+        
+        if($slug == null) {
+            abort(404);
+        }
+
+        $product = Product::where('product_slug', $slug)
+                    ->with('attachements')
+                    ->firstOrFail();
+        $attributes = ProductAttributeView::where('id', $product->id)->get()
+                            ->groupBy('attribute_name');
+
+        //dump($attributes);
+        return view('front.product.detail', compact('product', 'attributes'));
+    }
+
 }

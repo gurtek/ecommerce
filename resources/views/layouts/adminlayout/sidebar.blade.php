@@ -6,7 +6,7 @@
 
   <!-- <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li> -->
   <li>
-    <a href="#">
+    <a href="{{ route('dashboard.index') }}">
       <i class="fa fa-home"></i> 
       <span>Dashboard</span>
     </a>
@@ -25,6 +25,32 @@
       <li><a href="{{ url('admin/attributes') }}"><i class="fa fa-angle-double-right"></i> Attributes</a></li>
     </ul>
   </li>
+  <li>
+    <a href="{{ route('all.orders') }}">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      <span>All Orders</span>
+    </a>
+  </li>
+  <li>
+    <a href="{{ route('all.customers') }}">
+      <i class="fa fa-users" aria-hidden="true"></i>
+      <span>Customers</span>
+    </a>
+  </li>
+
+  <li>
+    <a
+    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+     href="{{ route('logout') }}">
+      <i class="fa fa-power-off" aria-hidden="true"></i>
+      <span>Logout</span>
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+		  @csrf
+    </form>
+  </li>
+
+
 </ul>
 <!-- /.sidebar-menu -->
 </section>

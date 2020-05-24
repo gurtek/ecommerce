@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -9,6 +10,9 @@ class DashboardController extends Controller
     //
     public function index() {
 
-        return view('admin.dashboard.index');
+        $orders = Order::with('orderItems')
+            ->with('user')->limit(10)->get();
+
+        return view('admin.dashboard.index', compact('orders'));
     }
 }

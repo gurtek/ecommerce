@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: May 17, 2020 at 01:10 PM
--- Server version: 10.4.10-MariaDB
--- PHP Version: 7.3.12
+-- Host: 127.0.0.1
+-- Generation Time: May 24, 2020 at 10:04 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,23 +28,21 @@ SET time_zone = "+00:00";
 -- Table structure for table `attributes`
 --
 
-DROP TABLE IF EXISTS `attributes`;
-CREATE TABLE IF NOT EXISTS `attributes` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `attributes` (
+  `id` bigint(20) NOT NULL,
   `name` varchar(191) DEFAULT NULL,
   `is_default` char(1) DEFAULT 'N',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `attributes`
 --
 
 INSERT INTO `attributes` (`id`, `name`, `is_default`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Breezy Deal', 'N', '2020-05-03 02:29:25', '2020-05-03 03:57:09', NULL),
+(1, 'Sizes', 'N', '2020-05-03 02:29:25', '2020-05-20 21:34:41', NULL),
 (2, 'Color', 'N', '2020-05-03 03:28:16', '2020-05-03 03:28:16', NULL),
 (3, 'Test', 'N', '2020-05-09 11:41:55', '2020-05-09 11:44:24', '2020-05-09 11:44:24');
 
@@ -54,24 +52,21 @@ INSERT INTO `attributes` (`id`, `name`, `is_default`, `created_at`, `updated_at`
 -- Table structure for table `attribute_values`
 --
 
-DROP TABLE IF EXISTS `attribute_values`;
-CREATE TABLE IF NOT EXISTS `attribute_values` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `attribute_values` (
+  `id` bigint(20) NOT NULL,
   `attribute_id` bigint(20) DEFAULT NULL,
   `attribute_value` varchar(50) DEFAULT NULL,
   `attribute_image` varchar(191) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `attribute_id` (`attribute_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `attribute_values`
 --
 
 INSERT INTO `attribute_values` (`id`, `attribute_id`, `attribute_value`, `attribute_image`, `updated_at`) VALUES
-(1, 1, 'Red zon', 'gdfgd', '2020-05-14 09:55:59'),
-(2, 1, 'Green', NULL, NULL),
+(1, 1, 'Medium', 'gdfgd', '2020-05-20 21:35:05'),
+(2, 1, 'Large', NULL, '2020-05-20 21:35:24'),
 (5, 2, 'Pink', NULL, NULL);
 
 -- --------------------------------------------------------
@@ -80,18 +75,15 @@ INSERT INTO `attribute_values` (`id`, `attribute_id`, `attribute_value`, `attrib
 -- Table structure for table `brands`
 --
 
-DROP TABLE IF EXISTS `brands`;
-CREATE TABLE IF NOT EXISTS `brands` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `brands` (
+  `id` bigint(20) NOT NULL,
   `brand_name` varchar(150) DEFAULT NULL,
   `brand_slug` varchar(150) DEFAULT NULL,
   `image` varchar(191) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_brand_slug` (`brand_slug`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `brands`
@@ -110,61 +102,19 @@ INSERT INTO `brands` (`id`, `brand_name`, `brand_slug`, `image`, `created_at`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cart`
---
-
-DROP TABLE IF EXISTS `cart`;
-CREATE TABLE IF NOT EXISTS `cart` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) DEFAULT NULL,
-  `total_amount` decimal(10,2) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cart_items`
---
-
-DROP TABLE IF EXISTS `cart_items`;
-CREATE TABLE IF NOT EXISTS `cart_items` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `product_id` bigint(20) DEFAULT NULL,
-  `cart_id` bigint(20) DEFAULT NULL,
-  `product_price` varchar(20) NOT NULL,
-  `quantity` decimal(10,2) DEFAULT NULL,
-  `product_attributes` text DEFAULT NULL,
-  `total_price` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `cart_id` (`cart_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE IF NOT EXISTS `categories` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `categories` (
+  `id` bigint(20) NOT NULL,
   `category_name` varchar(150) NOT NULL,
   `category_slug` varchar(150) NOT NULL,
   `image` varchar(191) DEFAULT NULL,
   `parent_id` bigint(20) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_category_slug` (`category_slug`),
-  KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `categories`
@@ -174,7 +124,7 @@ INSERT INTO `categories` (`id`, `category_name`, `category_slug`, `image`, `pare
 (1, 'men', 'men', NULL, NULL, '2020-04-26 09:37:01', '2020-04-28 11:16:31', NULL),
 (2, 'women', 'women', NULL, NULL, '2020-04-26 05:05:42', '2020-04-26 05:05:42', NULL),
 (3, 'test', 'test', '9I6B73821588426491.JPG', NULL, '2020-04-30 10:51:57', '2020-05-07 11:34:47', '2020-05-07 11:34:47'),
-(4, 'menss', 'menss', NULL, 2, '2020-05-09 10:37:28', '2020-05-09 10:37:28', NULL);
+(4, 'footware', 'footware', NULL, 2, '2020-05-09 10:37:28', '2020-05-09 10:37:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -182,18 +132,16 @@ INSERT INTO `categories` (`id`, `category_name`, `category_slug`, `image`, `pare
 -- Table structure for table `contact`
 --
 
-DROP TABLE IF EXISTS `contact`;
-CREATE TABLE IF NOT EXISTS `contact` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `contact` (
+  `id` bigint(20) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `email` varchar(120) DEFAULT NULL,
   `subject` varchar(120) DEFAULT NULL,
-  `message` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `message` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `contact`
@@ -209,18 +157,26 @@ INSERT INTO `contact` (`id`, `name`, `email`, `subject`, `message`, `created_at`
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE IF NOT EXISTS `orders` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `orders` (
+  `id` bigint(20) NOT NULL,
   `user_id` bigint(20) DEFAULT NULL,
   `order_no` varchar(20) NOT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `address_id` int(20) NOT NULL,
+  `status` varchar(10) NOT NULL DEFAULT 'P',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `order_no`, `total_amount`, `address_id`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, 'ORD_000001', '10.00', 1, 'D', '2020-05-24 00:02:20', '2020-05-24 02:27:57', NULL),
+(2, 3, 'ORD_000002', '2.00', 1, 'P', '2020-05-24 00:33:12', '2020-05-24 00:33:12', NULL),
+(3, 3, 'ORD_000003', '5.00', 1, 'S', '2020-05-24 00:37:25', '2020-05-24 02:27:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -228,18 +184,26 @@ CREATE TABLE IF NOT EXISTS `orders` (
 -- Table structure for table `order_items`
 --
 
-DROP TABLE IF EXISTS `order_items`;
-CREATE TABLE IF NOT EXISTS `order_items` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `order_items` (
+  `id` bigint(20) NOT NULL,
   `product_id` bigint(20) DEFAULT NULL,
   `order_id` bigint(20) DEFAULT NULL,
   `product_price` varchar(20) NOT NULL,
   `quantity` decimal(10,2) DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `order_id` (`order_id`)
+  `attributes` varchar(2000) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `product_id`, `order_id`, `product_price`, `quantity`, `total_price`, `attributes`) VALUES
+(1, 3, 1, '2', '1.00', '2.00', 'a:2:{i:0;a:3:{s:14:\"attribute_name\";s:5:\"Sizes\";s:15:\"attribute_value\";s:6:\"Medium\";s:15:\"attribute_price\";s:4:\"5.00\";}i:1;a:3:{s:14:\"attribute_name\";s:5:\"Color\";s:15:\"attribute_value\";s:4:\"Pink\";s:15:\"attribute_price\";s:4:\"6.00\";}}'),
+(2, 3, 1, '2', '1.00', '2.00', 'a:1:{i:0;a:3:{s:14:\"attribute_name\";s:5:\"Sizes\";s:15:\"attribute_value\";s:5:\"Large\";s:15:\"attribute_price\";s:4:\"3.00\";}}'),
+(3, 2, 1, '6', '1.00', '6.00', 'a:1:{i:0;a:3:{s:14:\"attribute_name\";s:5:\"Color\";s:15:\"attribute_value\";s:4:\"Pink\";s:15:\"attribute_price\";s:4:\"5.00\";}}'),
+(4, 3, 2, '2', '1.00', '2.00', NULL),
+(5, 1, 3, '5', '1.00', '5.00', NULL);
 
 -- --------------------------------------------------------
 
@@ -247,27 +211,27 @@ CREATE TABLE IF NOT EXISTS `order_items` (
 -- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products` (
+  `id` bigint(20) NOT NULL,
   `product_name` varchar(150) NOT NULL,
   `product_slug` varchar(150) NOT NULL,
-  `product_description` text DEFAULT NULL,
+  `product_description` text,
   `product_price` decimal(10,2) DEFAULT NULL,
+  `brand_id` int(20) DEFAULT NULL,
   `quantity` bigint(20) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_product_slug` (`product_slug`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `product_name`, `product_slug`, `product_description`, `product_price`, `quantity`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'text', 'text', 'test', '10.00', 10, '2020-05-14 09:46:43', '2020-05-14 09:46:43', NULL);
+INSERT INTO `products` (`id`, `product_name`, `product_slug`, `product_description`, `product_price`, `brand_id`, `quantity`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Simple test Product', 'simple-test-product', 'Product Test description', '5.00', NULL, 100, '2020-05-18 20:18:12', '2020-05-18 20:18:12', NULL),
+(2, 'Another product', 'another-product', 'product description', '6.00', 3, 100, '2020-05-19 00:38:08', '2020-05-19 00:38:08', NULL),
+(3, 'third product', 'third-product', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', '2.00', NULL, 200, '2020-05-20 21:36:58', '2020-05-20 21:36:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -275,22 +239,19 @@ INSERT INTO `products` (`id`, `product_name`, `product_slug`, `product_descripti
 -- Table structure for table `product_attachments`
 --
 
-DROP TABLE IF EXISTS `product_attachments`;
-CREATE TABLE IF NOT EXISTS `product_attachments` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_attachments` (
+  `id` bigint(20) NOT NULL,
   `product_id` bigint(20) DEFAULT NULL,
-  `file_path` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `file_path` varchar(255) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product_attachments`
 --
 
 INSERT INTO `product_attachments` (`id`, `product_id`, `file_path`) VALUES
-(1, 1, 'http://localhost/ecommerce/public/storage/files/1/products/alone.jpg'),
-(2, 1, 'http://localhost/ecommerce/public/storage/files/1/products/18767714_331253807292498_1938539012064040411_n.jpg');
+(1, 1, 'http://localhost/ecommerce/public/storage/files/1/product.jpg'),
+(2, 2, 'http://localhost/ecommerce/public/storage/files/1/K46ULlrLtb.jpg');
 
 -- --------------------------------------------------------
 
@@ -298,26 +259,46 @@ INSERT INTO `product_attachments` (`id`, `product_id`, `file_path`) VALUES
 -- Table structure for table `product_attributes`
 --
 
-DROP TABLE IF EXISTS `product_attributes`;
-CREATE TABLE IF NOT EXISTS `product_attributes` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_attributes` (
+  `id` bigint(20) NOT NULL,
   `product_id` bigint(20) DEFAULT NULL,
   `attribute_value_id` bigint(20) DEFAULT NULL,
   `quantity` bigint(11) DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `product_id` (`product_id`,`attribute_value_id`),
-  KEY `attribute_value_id` (`attribute_value_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `price` decimal(10,2) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product_attributes`
 --
 
 INSERT INTO `product_attributes` (`id`, `product_id`, `attribute_value_id`, `quantity`, `price`) VALUES
-(1, 1, 1, 1, '20.00'),
-(2, 1, 2, 2, '10.00'),
-(3, 1, 5, 3, '20.00');
+(1, 2, 5, 0, '5.00'),
+(2, 3, 1, 0, '5.00'),
+(3, 3, 2, 0, '3.00'),
+(4, 3, 5, 0, '6.00');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `product_attribute_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `product_attribute_view` (
+`id` bigint(20)
+,`product_name` varchar(150)
+,`product_slug` varchar(150)
+,`product_description` text
+,`product_price` decimal(10,2)
+,`quantity` bigint(20)
+,`created_at` timestamp
+,`updated_at` timestamp
+,`deleted_at` timestamp
+,`attribute_name` varchar(191)
+,`attribute_id` bigint(20)
+,`attribute_value` varchar(50)
+,`attribute_price` decimal(10,2)
+,`attribute_value_id` bigint(20)
+);
 
 -- --------------------------------------------------------
 
@@ -325,12 +306,9 @@ INSERT INTO `product_attributes` (`id`, `product_id`, `attribute_value_id`, `qua
 -- Table structure for table `product_brands`
 --
 
-DROP TABLE IF EXISTS `product_brands`;
-CREATE TABLE IF NOT EXISTS `product_brands` (
+CREATE TABLE `product_brands` (
   `product_id` bigint(20) DEFAULT NULL,
-  `brand_id` bigint(20) DEFAULT NULL,
-  UNIQUE KEY `uk_productid_brandid` (`brand_id`,`product_id`),
-  KEY `product_id` (`product_id`)
+  `brand_id` bigint(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -339,12 +317,9 @@ CREATE TABLE IF NOT EXISTS `product_brands` (
 -- Table structure for table `product_categories`
 --
 
-DROP TABLE IF EXISTS `product_categories`;
-CREATE TABLE IF NOT EXISTS `product_categories` (
+CREATE TABLE `product_categories` (
   `product_id` bigint(20) DEFAULT NULL,
-  `category_id` bigint(20) DEFAULT NULL,
-  UNIQUE KEY `uk_productid_categoryid` (`category_id`,`product_id`),
-  KEY `product_id` (`product_id`)
+  `category_id` bigint(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -352,7 +327,23 @@ CREATE TABLE IF NOT EXISTS `product_categories` (
 --
 
 INSERT INTO `product_categories` (`product_id`, `category_id`) VALUES
-(1, 1);
+(2, 1),
+(3, 1),
+(1, 2),
+(3, 2),
+(2, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `product_categories_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `product_categories_view` (
+`product_id` bigint(20)
+,`category_id` bigint(20)
+,`category_name` varchar(150)
+);
 
 -- --------------------------------------------------------
 
@@ -360,17 +351,23 @@ INSERT INTO `product_categories` (`product_id`, `category_id`) VALUES
 -- Table structure for table `transactions`
 --
 
-DROP TABLE IF EXISTS `transactions`;
-CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `transactions` (
+  `id` bigint(20) NOT NULL,
   `order_id` bigint(20) DEFAULT NULL,
   `amount` decimal(10,2) NOT NULL,
-  `transaction_id` varchar(20) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`)
+  `transaction_id` varchar(200) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `order_id`, `amount`, `transaction_id`, `created_at`, `updated_at`) VALUES
+(1, 1, '10.00', '7T548660081470636', '2020-05-24 00:02:20', '2020-05-24 00:02:20'),
+(2, 2, '2.00', '7YA58319MU123645X', '2020-05-24 00:33:12', '2020-05-24 00:33:12'),
+(3, 3, '5.00', '0AK85813205904903', '2020-05-24 00:37:25', '2020-05-24 00:37:25');
 
 -- --------------------------------------------------------
 
@@ -378,9 +375,8 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -388,18 +384,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `mobile` varchar(20) DEFAULT NULL,
   `timezone` varchar(255) DEFAULT NULL,
   `type` char(5) DEFAULT 'CUS' COMMENT 'cus => customer, ADM => Admin',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `mobile`, `timezone`, `type`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@mail.com', '$2y$10$wiHuQFAUobp6XnRH6lUtiePEC1BL4mbToDwrRiTre65SyT7bCH8jO', NULL, NULL, NULL, 'ADM', '2020-04-26 03:07:24', '2020-04-26 03:07:24');
+(1, 'admin', 'admin@mail.com', '$2y$10$QDPS0Son.IQsvwyzQWAxgenDtzEPf71oC4S9W50c64WUMW/1YkKEW', NULL, NULL, NULL, 'ADM', '2020-04-26 03:07:24', '2020-04-26 03:07:24'),
+(2, 'inderjit', 'inderjit@mail.com', '$2y$10$R1lGIK/srPng4rSB8PVVievV2dsyn.3vG9lJ4WiC/wguTYw3xuszi', NULL, NULL, NULL, 'CUS', '2020-05-23 07:32:57', '2020-05-23 07:32:57'),
+(3, 'Customer 1', 'customer1@mail.com', '$2y$10$m4Se4mTiNcg7igo/WOZ37ez0b7vy6MlU8XUQ9ooZKgkFSu7Fgbf8S', NULL, '9856325478', NULL, 'CUS', '2020-05-23 19:47:56', '2020-05-23 19:47:56');
 
 -- --------------------------------------------------------
 
@@ -407,9 +403,9 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `mobil
 -- Table structure for table `user_address`
 --
 
-DROP TABLE IF EXISTS `user_address`;
-CREATE TABLE IF NOT EXISTS `user_address` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_address` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(200) NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `city` varchar(50) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
@@ -418,10 +414,226 @@ CREATE TABLE IF NOT EXISTS `user_address` (
   `address` varchar(255) NOT NULL,
   `land_mark` varchar(50) DEFAULT NULL,
   `is_default` char(1) DEFAULT 'N',
-  `address_type` char(5) DEFAULT 'H' COMMENT 'H => Home , O => Office',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  `address_type` char(5) DEFAULT 'H' COMMENT 'H => Home , O => Office'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_address`
+--
+
+INSERT INTO `user_address` (`id`, `name`, `user_id`, `city`, `state`, `country`, `pincode`, `address`, `land_mark`, `is_default`, `address_type`) VALUES
+(1, 'Home Address', 3, 'Jalandhar', 'Punjab', 'India', '144001', 'vpo hazara distt jalandhar', NULL, 'N', 'H'),
+(2, 'Office address', 3, 'jalandhar', 'punjab', 'India', '144001', 'Cool road near Nimbus', 'Near State Bank of India', 'N', 'H');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `product_attribute_view`
+--
+DROP TABLE IF EXISTS `product_attribute_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `product_attribute_view`  AS  select `p`.`id` AS `id`,`p`.`product_name` AS `product_name`,`p`.`product_slug` AS `product_slug`,`p`.`product_description` AS `product_description`,`p`.`product_price` AS `product_price`,`p`.`quantity` AS `quantity`,`p`.`created_at` AS `created_at`,`p`.`updated_at` AS `updated_at`,`p`.`deleted_at` AS `deleted_at`,`a`.`name` AS `attribute_name`,`a`.`id` AS `attribute_id`,`av`.`attribute_value` AS `attribute_value`,`pa`.`price` AS `attribute_price`,`pa`.`attribute_value_id` AS `attribute_value_id` from (((`products` `p` join `product_attributes` `pa` on((`p`.`id` = `pa`.`product_id`))) join `attribute_values` `av` on((`pa`.`attribute_value_id` = `av`.`id`))) join `attributes` `a` on((`av`.`attribute_id` = `a`.`id`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `product_categories_view`
+--
+DROP TABLE IF EXISTS `product_categories_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `product_categories_view`  AS  select `pc`.`product_id` AS `product_id`,`pc`.`category_id` AS `category_id`,`c`.`category_name` AS `category_name` from (`product_categories` `pc` join `categories` `c` on((`pc`.`category_id` = `c`.`id`))) ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `attributes`
+--
+ALTER TABLE `attributes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attribute_values`
+--
+ALTER TABLE `attribute_values`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `attribute_id` (`attribute_id`);
+
+--
+-- Indexes for table `brands`
+--
+ALTER TABLE `brands`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_brand_slug` (`brand_slug`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_category_slug` (`category_slug`),
+  ADD KEY `parent_id` (`parent_id`);
+
+--
+-- Indexes for table `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_product_slug` (`product_slug`);
+
+--
+-- Indexes for table `product_attachments`
+--
+ALTER TABLE `product_attachments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `product_attributes`
+--
+ALTER TABLE `product_attributes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `product_id` (`product_id`,`attribute_value_id`),
+  ADD KEY `attribute_value_id` (`attribute_value_id`);
+
+--
+-- Indexes for table `product_brands`
+--
+ALTER TABLE `product_brands`
+  ADD UNIQUE KEY `uk_productid_brandid` (`brand_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `product_categories`
+--
+ALTER TABLE `product_categories`
+  ADD UNIQUE KEY `uk_productid_categoryid` (`category_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_email` (`email`);
+
+--
+-- Indexes for table `user_address`
+--
+ALTER TABLE `user_address`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `attributes`
+--
+ALTER TABLE `attributes`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `attribute_values`
+--
+ALTER TABLE `attribute_values`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `brands`
+--
+ALTER TABLE `brands`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `product_attachments`
+--
+ALTER TABLE `product_attachments`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `product_attributes`
+--
+ALTER TABLE `product_attributes`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `user_address`
+--
+ALTER TABLE `user_address`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

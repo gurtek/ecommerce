@@ -28,9 +28,11 @@
 	@include('layouts.frontlayout.header')
     <!--/header-->
 	
+	@if(\Request::is('/'))
+        @include('layouts.frontlayout.slider')
+    @endif
 	
-	@include('layouts.frontlayout.slider')
-	<section>
+    <section>
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-3">
@@ -53,5 +55,8 @@
 	<script src="{{ asset('css/front/js/price-range.js ') }}"></script>
     <script src="{{ asset('css/front/js/jquery.prettyPhoto.js') }}"></script>
     <script src="{{ asset('css/front/js/main.js') }}"></script>
+
+    @yield('scripts')
+
 </body>
 </html>

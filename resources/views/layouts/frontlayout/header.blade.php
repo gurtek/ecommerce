@@ -45,8 +45,42 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">																
-								<li><a href="{{ url('cart') }}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href=""><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="{{ url('cart') }}">
+								<i class="fa fa-shopping-cart"></i> Cart({{ getTotalQuantity()  }})</a></li>
+								@guest
+									<li>
+									<a href="{{ route('login') }}">
+									<i class="fa fa-lock"></i> 
+								Login</a></li>
+								<li>
+									<a href="{{ route('register') }}">
+								Register</a></li>
+								@else 
+
+								<li>
+								<a href="{{ route('my.orders') }}">
+								<i class="fa fa-lock"></i> 
+							Orders</a></li>
+
+							<li>
+								<a href="{{ route('logout') }}" 
+								onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+								<i class="fa fa-lock"></i>Logout</a>
+
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+									@csrf
+								</form>
+
+							</li>
+
+							<li>
+								<a href="#" style="color: orange !important;">
+								<i class="fa fa-user"></i> 
+							{{ 'Welcome, '. auth()->user()->name . ' '}}</a>
+							</li>
+
+
+								@endguest
 							</ul>
 						</div>
 					</div>
@@ -59,7 +93,8 @@
 				<div class="row">
 					<div class="col-sm-9">
 						<div class="navbar-header">
-							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" 
+							data-target=".navbar-collapse">
 								<span class="sr-only">Toggle navigation</span>
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
@@ -68,24 +103,23 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
+								<li><a href="{{ route('index') }}" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
+                                        <li><a href="{{ route('front.products') }}">Products</a></li>
+										<li><a href="{{ route('cart.index') }}">Cart</a></li>
                                     </ul>
                                 </li> 
-								<li><a href="">Contact</a></li>
+								<li><a href="{{ route('contact.index') }}">Contact</a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-sm-3">
+						{{ Form::open(['url' => route('front.products.search'), 'method' => 'Get']) }}
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
+							<input type="text" name = "value" placeholder="Search"/>
 						</div>
+						{{ Form::close() }}
 					</div>
 				</div>
 			</div>

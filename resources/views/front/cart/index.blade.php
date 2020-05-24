@@ -22,162 +22,149 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+					@if($cart->count())
+						@foreach($cart as $item)
+						@php
+							$options = null;
+							$image = asset('images/no-image.png');
+							
+							if($item->attributes->image != null) {
+								$image = $item->attributes->image;
+							}
 
+							if($item->attributes->options != null) {
+								$options = unserialize($item->attributes->options);
+							}
+						@endphp
 						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								<td class="cart_product">
+									<a href="javascript:void(0);"><img src="{{ $image }}" 
+									style = "width: 100px; height: 100px;"
+									class="img img-thumbnail"></a>
+								</td>
+								<td class="cart_description">
+									<h4><a href="javascript:void(0);">{{ $item->name }}</a></h4>
+									@if($options)
+										@foreach($options as $option)
+											<div>
+												{{ $option['attribute_name'] . '-' . $option['attribute_value'] }}
+											</div>
+										@endforeach
+									@endif
+									
+								</td>
+								<td class="cart_price">
+									<p>{{ '$ '. number_format($item->price, 2) }}</p>
+								</td>
+								<td class="cart_quantity">
+									<div class="cart_quantity_button">
+										<input
+										class="cart_quantity_input" 
+										id="{{ $item->id }}"
+										type="number" name="quantity" 
+										value="{{ $item->quantity }}" autocomplete="off" style = "width: 40px;">
+										
+										<a data-id="{{ $item->id }}" href="javascript:void(0);"
+										 class="btn btn-xs update-item" title = "click here to update quantity">
+											<i class="fa fa-refresh" aria-hidden="true"></i>
+										</a>
+
+									</div>
+								</td>
+								<td class="cart_total">
+									<p class="cart_total_price">
+										{{ '$ ' . number_format($item->price * $item->quantity, 2) }}
+									</p>
+								</td>
+								<td class="cart_delete">
+									<a data-id="{{ $item->id }}" class="cart_quantity_delete" href="javascript:void(0);">
+										<i class="fa fa-times"></i>
+									</a>
+								</td>
+							</tr>
+							@endforeach
+						@else
+						<tr>
+							<td colspan="5" class="text-center">
+								<h4>Cart is empty</h4>
+								<p><a href="{{ route('home') }}" class="btn btn-danger">Continue Shopping</a></p>
 							</td>
 						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
+					@endif
+						
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</section> <!--/#cart_items-->
-
-	<section id="do_action">
+	@if($cart->count()) 
 		<div class="container">
-			<div class="heading">
-				<h3>What would you like to do next?</h3>
-				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-			</div>
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="chose_area">
-						<ul class="user_option">
-							<li>
-								<input type="checkbox">
-								<label>Use Coupon Code</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Use Gift Voucher</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Estimate Shipping & Taxes</label>
-							</li>
-						</ul>
-						<ul class="user_info">
-							<li class="single_field">
-								<label>Country:</label>
-								<select>
-									<option>United States</option>
-									<option>Bangladesh</option>
-									<option>UK</option>
-									<option>India</option>
-									<option>Pakistan</option>
-									<option>Ucrane</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-								
-							</li>
-							<li class="single_field">
-								<label>Region / State:</label>
-								<select>
-									<option>Select</option>
-									<option>Dhaka</option>
-									<option>London</option>
-									<option>Dillih</option>
-									<option>Lahore</option>
-									<option>Alaska</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-							
-							</li>
-							<li class="single_field zip-field">
-								<label>Zip Code:</label>
-								<input type="text">
-							</li>
-						</ul>
-						<a class="btn btn-default update" href="">Get Quotes</a>
-						<a class="btn btn-default check_out" href="">Continue</a>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div class="total_area">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-3"></div>
+			<div class="col-md-3"></div>
+			<div class="col-md-3"> <div class="total_area">
 						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
+							<li>Total <span>{{ '$ '. number_format($cartTotal, 2) }}</span></li>
 						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
-					</div>
-				</div>
-			</div>
+						</div> 
+						
+						</div>
 		</div>
-	</section><!--/#do_action-->
+
+		<a class="btn btn-default check_out" href="{{ route('checkout') }}">Check Out</a> 
+		</div>
+		<br /><br /><br >
+	@endif
+@endsection
+
+@section('scripts')
+	<script>
+		$(document).ready(function(){
+			$('.cart_quantity_delete').on('click', function(){
+				const id = $(this).data('id');
+				if(confirm('are you sure to remove item from cart?')) {
+					$.ajax({
+						method: 'GET',
+						data: {
+							id: id
+						},
+						url: "{{ route('remove.item') }}",
+						success: function(result) {
+							if(result.status == 200) {
+								alert(result.message);
+								setTimeout(() => {
+									window.location.reload();
+								}, 300);
+							}
+						}
+					});
+				}
+			});
+			
+			$('.update-item').on('click', function(){
+				const id = $(this).data('id');
+				const quantity = $('#' + id).val();
+
+				if(confirm('are you sure to update item?')) {
+					$.ajax({
+						method: 'GET',
+						data: {
+							id: id,
+							quantity: quantity
+						},
+						url: "{{ route('update.item') }}",
+						success: function(result) {
+							if(result.status == 200) {
+								alert(result.message);
+								setTimeout(() => {
+									window.location.reload();
+								}, 300);
+							}
+						}
+					});
+				}
+			});
+		});
+	</script>
 @endsection

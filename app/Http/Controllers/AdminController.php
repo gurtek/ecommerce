@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Session;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session;
 
 class AdminController extends Controller
 {
     //
     public function index(Request $request) {
 
-        if($request->isMethod('post')) {
+        if($request->isMethod('post')) { 
+            
             $data = $request->input();
             
             $this->validate($request,[

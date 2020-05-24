@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -14,6 +15,49 @@ class OrdersController extends Controller
     public function index()
     {
         //
+    }
+
+    public function customerOrder() {
+        
+        $orders = Order::where('user_id', auth()->user()->id)
+            ->orderBy('id', 'desc')
+            ->with('orderItems')
+            ->get();
+        
+        return view('front.order.index', compact('orders'));
+    }
+
+    public function allOrders() {
+        
+        $orders = Order::orderBy('id', 'desc')
+                ->with('orderItems')
+                ->with('user')
+                ->paginate(10);
+        
+        return view('admin.order.index', compact('orders'));
+    }
+
+    public function changeStatus(Request $request) {
+        $this->validate($request, [
+            'order_id' => 'required',
+            'status' => 'required'
+        ]);
+
+        $order = Order::where('id', $request->order_id)->first();
+        if($order == null) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Order not found.'
+            ]);
+        }
+
+        $order->status = $request->status;
+        $order->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'The status has been changed of the order.'
+        ]);
     }
 
     /**
