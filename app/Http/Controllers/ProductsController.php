@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
 use Exception;
 use Validator;
 use App\Product;
@@ -73,7 +74,8 @@ class ProductsController extends Controller
     {
         $categories = $this->_category->options(false);
         $attributes = $this->_attribute->attributeOptions();
-        return view('admin.product.create', compact('categories', 'attributes'));
+        $brands = (new Brand)->options();
+        return view('admin.product.create', compact('categories', 'attributes', 'brands'));
     }
 
     /**
@@ -96,7 +98,8 @@ class ProductsController extends Controller
             'product_name' => 'required|unique:products,product_name',
             'product_description' => 'required',
             'price' => 'required|numeric',
-            'quantity' => 'required|numeric'
+            'quantity' => 'required|numeric',
+            'brand' => 'required|numeric'
         ]);
 
         if($validator->fails()) {
@@ -153,9 +156,12 @@ class ProductsController extends Controller
         $product->product_description = $data['product_description'];
         $product->product_price = $data['price'];
         $product->quantity = $data['quantity'];
+        $product->brand_id = $data['brand'];
         $product->save();
         return $product->id;
     }
+
+    
 
     private function _insertProductAttributes($data, $productId) {
         $ids = $this->_sanitizeAttributeValueIds($data);
@@ -235,18 +241,7 @@ class ProductsController extends Controller
         return false;
     }
 
-    
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+     
 
     /**
      * Show the form for editing the specified resource.
@@ -254,9 +249,110 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        $categories = $this->_category->options(false);
+        $attributes = $this->_attribute->attributeOptions();
+        $brands = (new Brand)->options();
+        $productCategories = ProductCategory::where('product_id', $product->id)
+        ->pluck('category_id');
+
+        $productCategories = $productCategories->count() ? $productCategories->toArray() : [];
+       
+        $productAttributes = ProductAttributeView::where('id', $product->id)->get();
+
+        return view('admin.product.edit', compact('categories', 'productAttributes', 'attributes', 'productCategories', 
+        'brands', 'product'));
+    }
+
+    public function ajaxUpdate(Request $request) {
+        if(!$request->ajax()) {
+            abort(404);
+        }
+        $requestData = $request->all();        
+        $data=  array();
+        parse_str($requestData['formdata'], $data);
+
+
+        $validator = Validator::make($data, [
+            'product_id' => 'required|numeric',
+            'product_name' => 'required|unique:products,product_name,' . $data['product_id'],
+            'product_description' => 'required',
+            'price' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'brand' => 'required|numeric'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => $this->_renderErrorMessages($validator->errors())
+            ], 200);
+        }
+
+        DB::beginTransaction();
+        try {
+
+            #insert product
+            $this->_updateProduct($data);
+            
+            #insert product categories
+            //delete all entries
+            $productCategoryIds = ProductCategory::where('product_id', $data['product_id'])
+                                ->pluck('product_id');
+                                //dd($productCategoryIds->count());
+            if($productCategoryIds->count()) {
+                ProductCategory::where('product_id', $data['product_id'])->delete();
+            }
+
+
+            $this->_insertProductCategories($data, $data['product_id']);
+
+            $productAttribtueIds = ProductAttribute::where('product_id', $data['product_id'])
+                                ->pluck('id');
+            if($productAttribtueIds->count()) {
+                ProductAttribute::whereIn('id', $productAttribtueIds)->delete();
+            }
+
+            # insert attributes if any
+            $this->_insertProductAttributes($data, $data['product_id']);
+
+
+            # insert product attachements
+            $productImageIds = ProductAttachement::where('product_id', $data['product_id'])
+                                ->pluck('id');
+            if($productImageIds->count()) {
+                ProductAttachement::whereIn('id', $productImageIds)->delete();
+            }
+            
+            $this->_insertProductAttachements($data, $data['product_id']);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Product has been updated successfully.'
+            ], 200);
+
+        } catch(Exception $exception) {
+            // log exception
+            DB::rollback();
+            return response()->json([
+                'status' => 500,
+                'message' => $exception->getMessage()
+            ], 200);
+        }
+    }
+
+    private function _updateProduct($data) {
+        $product = Product::find($data['product_id']);
+        $product->product_name = $data['product_name'];
+        $product->product_slug = Str::slug( $data['product_name'], '-');
+        $product->product_description = $data['product_description'];
+        $product->product_price = $data['price'];
+        $product->quantity = $data['quantity'];
+        $product->brand_id = $data['brand'];
+        $product->save();
     }
 
     /**

@@ -2574,3 +2574,6 @@ h2.title {
 }
 }
 
+.item {
+  padding-left: 0px !important;
+}

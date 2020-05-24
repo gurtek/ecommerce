@@ -28,6 +28,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::match(['delete','post'],'/attribute/{attribute}/valuedestroy', 'AttributesController@valuedestroy')->name('attribute.valuedestroy');
     Route::get('/attribute/values', 'ProductsController@getAttributeValueById')->name('attribute.value');
     Route::resource('products', 'ProductsController');
+    Route::post('products/ajax/update', 'ProductsController@ajaxUpdate')->name('products.ajax.update');
+    
     Route::get('/dashboard','DashboardController@index')->name('dashboard.index');
 
     Route::get('/order/list', 'OrdersController@allOrders')->name('all.orders');

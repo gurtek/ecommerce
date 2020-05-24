@@ -13,7 +13,7 @@ class Product extends Model
    protected $fillable = [
      'product_name', 'product_slug', 
      'product_description',
-     'product_price', 'quantity'
+     'product_price', 'quantity', 'brand_id'
    ];
 
      public function attachements() {

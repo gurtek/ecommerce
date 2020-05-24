@@ -25,7 +25,6 @@
             $('<img>').css('height', '5rem').attr('src', item.thumb_url)
           );
         });
-
         // trigger change event
         target_preview.trigger('change');
       };

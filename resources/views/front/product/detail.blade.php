@@ -9,8 +9,10 @@
 	
 	@if(optional($product->attachements) && count($product->attachements) )
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
+	<!-- Indicators -->
+	
 	@if(count($product->attachements) > 1)
+	
 		<ol class="carousel-indicators">
 			@foreach($product->attachements as $image)
 				<li data-target="#myCarousel" data-slide-to="{{ $loop->index }}" 
@@ -22,7 +24,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
 	  	@foreach($product->attachements as $image)
-		  <div class="active">
+		  <div class="item {{ $loop->index == 0 ? 'active' : '' }}">
 			<img src="{{ $image->file_path }}" style="width:100%;">
 		</div>
 		@endforeach

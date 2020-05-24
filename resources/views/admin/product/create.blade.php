@@ -53,6 +53,12 @@
               
       </div>
 
+      <div class="form-group">
+              {{ Form::label('brand') }}
+              {{ Form::select('brand', $brands, null, ['class' => 'form-control']) }}
+              
+      </div>
+
     <div class="form-group">
             {{ Form::label('categories') }}
             {{ Form::select('categories[]', $categories, null, ['multiple' => 'multiple', 'class' => 'form-control']) }}
@@ -86,31 +92,84 @@
     <div role="tabpanel" class="tab-pane" id="messages">
 
     <div class="row" id="attachment_row1">
-		<div class="col-md-6" >
-		  <div class="input-group">
-			<span class="input-group-btn">
-			  <a data-input="thumbnail" data-preview="holder" class="lfm btn btn-primary">
-				<i class="fa fa-picture-o"></i> CHOOSE
-			  </a>
-			</span>
-			<input id="thumbnail" class="form-control" type="text" name="image[]" readonly>
-		  </div>
-		  <img id="holder" style="margin-top:15px;max-height:100px;">
-		</div>
-		
+      <div class="col-md-6" >
+        <div class="input-group">
+        <span class="input-group-btn">
+          <a data-input="thumbnail" data-preview="holder" class="lfm btn btn-primary">
+          <i class="fa fa-picture-o"></i> CHOOSE
+          </a>
+        </span>
+        <input id="thumbnail" class="form-control" type="text" name="image[]" readonly>
+        </div>
+        <img id="holder" style="margin-top:15px;max-height:100px;">
+      </div> 
+  </div> 
+  
+  <div class="row" id="attachment_row1">
+      <div class="col-md-6" >
+        <div class="input-group">
+        <span class="input-group-btn">
+          <a data-input="thumbnail2" data-preview="holder2" class="lfm btn btn-primary">
+          <i class="fa fa-picture-o"></i> CHOOSE
+          </a>
+        </span>
+        <input id="thumbnail2" class="form-control" type="text" name="image[]" readonly>
+        </div>
+        <img id="holder2" style="margin-top:15px;max-height:100px;">
+      </div> 
+  </div>
+  
+  <div class="row" id="attachment_row1">
+      <div class="col-md-6" >
+        <div class="input-group">
+        <span class="input-group-btn">
+          <a data-input="thumbnail3" data-preview="holder3" class="lfm btn btn-primary">
+          <i class="fa fa-picture-o"></i> CHOOSE
+          </a>
+        </span>
+        <input id="thumbnail3" class="form-control" type="text" name="image[]" readonly>
+        </div>
+        <img id="holder3" style="margin-top:15px;max-height:100px;">
+      </div> 
+  </div>
+  
+  <div class="row" id="attachment_row1">
+      <div class="col-md-6" >
+        <div class="input-group">
+        <span class="input-group-btn">
+          <a data-input="thumbnail4" data-preview="holder4" class="lfm btn btn-primary">
+          <i class="fa fa-picture-o"></i> CHOOSE
+          </a>
+        </span>
+        <input id="thumbnail4" class="form-control" type="text" name="image[]" readonly>
+        </div>
+        <img id="holder4" style="margin-top:15px;max-height:100px;">
+      </div> 
+  </div>
+  
+  <div class="row" id="attachment_row1">
+      <div class="col-md-6" >
+        <div class="input-group">
+        <span class="input-group-btn">
+          <a data-input="thumbnail5" data-preview="holder5" class="lfm btn btn-primary">
+          <i class="fa fa-picture-o"></i> CHOOSE
+          </a>
+        </span>
+        <input id="thumbnail5" class="form-control" type="text" name="image[]" readonly>
+        </div>
+        <img id="holder5" style="margin-top:15px;max-height:100px;">
+      </div> 
 	</div>
+
 	<div id="product_attachment_area">
 			
-		</div>
-	<div class="row" style="margin-bottom:30px;">
+  </div>
+	<!-- <div class="row" style="margin-bottom:30px;">
 		<div class="col-md-12">
 			<a href="javascript:void(0)" class="btn btn-default" id="add_more_attachment">Add More</a>
 			<input type="hidden" name="attachment_count" id="attachment_count" value="1">
 		</div>
-	</div>
-	
-	
-
+	</div>  -->
 
     </div>
 
@@ -127,6 +186,7 @@
           $('[class*="lfm"]').each(function() {
               $(this).filemanager('file', {prefix: routePrefix});
           }); 
+
           let ids = [];
            $('#attribute').on('change', function () {
                 const value = $(this).val();
@@ -214,18 +274,19 @@
 		  $(document).ready(function() {
 			  
 				$('#add_more_attachment').on('click',function() {				
-				count = Number($('#attachment_count').val());
-				count++;								
-				addMoreAttachment(count);
-				$('#attachment_count').val(count);
-			})
+            count = Number($('#attachment_count').val());
+            count++;								
+          addMoreAttachment(count);
+          $('#attachment_count').val(count);
+			  })
 		  })
 		
 		  function addMoreAttachment(id) {
-				var nwrow='<div class="row"><div class="col-md-6" id="attachment_row'+id+'"><div class="input-group"><span class="input-group-btn"><a data-input="thumbnail2" data-preview="holder2" class="lfm btn btn-primary"><i class="fa fa-picture-o"></i>CHOOSE</a></span><input id="thumbnail2" class="form-control" type="text" name="image[]" readonly></div><img id="holder2" style="margin-top:15px;max-height:100px;"></div></div>';
-				var div = document.getElementById('product_attachment_area');
-				div.innerHTML += nwrow;
-		  }		//$("#product_attachment_area").append(nwrow);  
+				var nwrow='<div class="row"><div class="col-md-6" id="attachment_row_'+id+'"><div class="input-group"><span class="input-group-btn"><a data-input="thumbnail_'+id+'" data-preview="holder_'+ id +'" class="lfm btn btn-primary"><i class="fa fa-picture-o"></i>CHOOSE</a></span><input id="thumbnail_'+ id +'" class="form-control" type="text" name="image[]" readonly></div><img id="holder_'+ id +'" style="margin-top:15px;max-height:100px;"></div></div>';
+				//var div = document.getElementById('product_attachment_area');
+        //div.innerHTML += nwrow;
+        $("#product_attachment_area").append(nwrow); 
+		  }		 
         
     </script>
  

@@ -19,4 +19,15 @@ class Brand extends Model
     public function products() {
         return $this->hasMany(Product::class);
     }
+
+    public function options() {
+        $result = ['' => 'Select an option'];
+
+        $data = $this->pluck('brand_name', 'id');
+
+        if($data->count()) {
+            $result+= $data->toArray();
+        }
+        return $result;
+    }
 }
