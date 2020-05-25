@@ -94,14 +94,14 @@
                             $ids[] =  $attributeValue->attribute_value_id;
                           @endphp
                           <div id="attribute_name_{{ $attributeValue->attribute_id }}">
-                            <div class="well"> 
+                            <div class="well" id="attribute-{{ $attributeValue->attribute_id }}-value-container-{{ $attributeValue->attribute_value_id }}"> 
                               <p style="font-weight: bold; font-size: 16px; text-transform: capitalize; font-family: sans-serif;">{{ $attributeValue->attribute_name }} - {{ $attributeValue->attribute_value }}</p> 
                               <div class="row">     
                               <div class="col-md-12"> <label>price</label>
                               <input type="number" value = "{{ $attributeValue->attribute_price }}" step="0.01" class="form-control" name="attribute_price[]"> 
                               <input type="hidden" class="form-control" name="attribute_value_id[]" value="{{ $attributeValue->attribute_value_id }}"> </div> 
                                </div>
-                               <!-- <a href="javascript:void(0);" class = "remove" data-id = "{{ $attributeValue->attribute_id }}">Remove</a> -->
+                                <!-- <a href="javascript:void(0);" class = "remove" data-id = "attribute-{{ $attributeValue->attribute_id }}-value-container-{{ $attributeValue->attribute_value_id }}">Remove</a> -->
                                </div>
                               
                               </div>
@@ -176,13 +176,17 @@
 @section('scripts')
     <script>
         //var ids = [];
-        $(function(){
+
+        $(function(){ 
+
+          let ids = @json($ids);
           const routePrefix = "{{ env('APP_URL', 'localhost/ecommerce/public') }}/laravel-filemanager";
            
           $('[class*="lfm"]').each(function() {
               $(this).filemanager('file', {prefix: routePrefix});
           }); 
 
+           
           
            $('#attribute').on('change', function () {
                 const value = $(this).val();
@@ -211,10 +215,8 @@
                 return false;
               } 
               //ids = JSON.parse("{{ isset($ids) ? json_encode($ids) : json_encode([]) }}");
-
-              let ids = [];
+              
               const id = $(this).data('id');
-              console.log(typeof(ids), ids);
               if(!ids.includes(id)) {
                   ids.push(id); 
                 renderControls(id, attributeId, attributeName, attributeValueName);
@@ -226,7 +228,7 @@
 
 
         function renderControls(id, attributeId, attributeName, attributeValueName) {
-          const raw = "<div class = 'well'> <p style ='font-weight: bold; font-size: 16px; text-transform: capitalize; font-family: sans-serif;' >"+ attributeName +" - "+ attributeValueName +"</p> <div class='row'> <div class = 'col-md-6'> <label>Quantity</label> <input type = 'number' step='0.01' class = 'form-control' name = 'attribute_quantity[]' /> </div>  <div class = 'col-md-6'> <label>price</label><input type = 'number' step='0.01' class = 'form-control' name = 'attribute_price[]' /> <input type = 'hidden' class = 'form-control' name = 'attribute_value_id[]' value = "+ id +" /> </div>  </div>";
+          const raw = "<div class = 'well' id = 'attribute-" + attributeId +"-value-container-"+ id +"'> <p style ='font-weight: bold; font-size: 16px; text-transform: capitalize; font-family: sans-serif;' >"+ attributeName +" - "+ attributeValueName +"</p> <div class='row'> <div class = 'col-md-6'> <label>Quantity</label> <input type = 'number' step='0.01' class = 'form-control' name = 'attribute_quantity[]' /> </div>  <div class = 'col-md-6'> <label>price</label><input type = 'number' step='0.01' class = 'form-control' name = 'attribute_price[]' /> <input type = 'hidden' class = 'form-control' name = 'attribute_value_id[]' value = "+ id +" /> </div>  </div>";
           $('#attribute_name_' + attributeId).append(raw);
         }
 
